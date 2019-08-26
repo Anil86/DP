@@ -5,76 +5,73 @@ namespace DP
 {
     public class PaintersPartitionProblem
     {
-        private int MinimizeMaxWorkDp(int noOfPainters, int[] boards)
+        private int MinimizeMaxBoards(int[] boards, int noOfPainters)
         {
             int[,] dp = new int[boards.Length, noOfPainters + 1];
 
             // No.of boards is 0 based, hence boards.Length - 1
-            return MinimizeMaxWork(boards.Length - 1, noOfPainters);
+            return MinimizeMaxBoards(boards.Length - 1, noOfPainters);
 
 
 
-            int MinimizeMaxWork(int noOfBoards, int painters)
+            int MinimizeMaxBoards(int noOfBoards, int painters)
             {
-                // Solve small sub-problems
-                if (noOfBoards == 0) return dp[0, painters] = boards[0];   // No.of boards = 1
+                // Note: noOfBoards is 0 based
 
-                // no.of painters ≥ No.of boards, return max
-                if (noOfBoards + 1 <= painters)
+                // Solve small sub-problems
+                if (noOfBoards == 0) return dp[0, painters] = boards[0];   // If only 1 board, return it
+                if (painters == 1) return dp[noOfBoards, 1] = AddBoards(0, noOfBoards);   // If only 1 painter, he paints all boards
+
+                if (painters >= noOfBoards + 1)   // If painters >= boards, return max board
                 {
-                    int max = int.MinValue;
-                    for (int i = 0; i <= noOfBoards; i++) max = Math.Max(max, boards[i]);
-                    return dp[noOfBoards, painters] = max;
+                    int maxBoard = int.MinValue;
+                    for (int i = 0; i <= noOfBoards; i++) maxBoard = Math.Max(boards[i], maxBoard);
+                    return dp[noOfBoards, painters] = maxBoard;
                 }
 
-                if (painters == 1) return dp[noOfBoards, 1] = SumWork(0, noOfBoards);   // No.of painters = 1
-
-
-                int minimizedMaxWork = int.MaxValue;
-                for (int i = 0; i < noOfBoards; i++)
+                int minimumMaxBoardsSegment = int.MaxValue;
+                for (int board = 0; board < noOfBoards; board++)
                 {
                     // Divide
-                    // Max of previous sub-array [0 : i]
+                    // Problem 2: Max of previous sub-array [0 : i]
                     // Painters = painters - last painter
-                    int prevPaintersMax = dp[i, painters - 1] == 0
-                        ? dp[i, painters - 1] = MinimizeMaxWork(i, painters - 1)
-                        : dp[i, painters - 1];
-                    int lastPainterSum = SumWork(i + 1, noOfBoards);   // Last sub-array "[i + 1 : end]" sum
+                    int prevPartitionsMax = dp[board, painters - 1] == 0
+                        ? dp[board, painters - 1] = MinimizeMaxBoards(board, painters - 1)
+                        : dp[board, painters - 1];
+                    // Problem 1: Last sub-array "[i + 1 : noOfBoards]" sum
+                    int lastPartition = AddBoards(board + 1, noOfBoards);
 
 
                     // Combine
-                    // Find max of previous & last sub-array
-                    int currentMaxWork = Math.Max(prevPaintersMax, lastPainterSum);
+                    // Time taken = max segment
+                    int maxBoardsSegment = Math.Max(prevPartitionsMax, lastPartition);
 
 
-                    // Minimize max sub-array
-                    minimizedMaxWork = Math.Min(currentMaxWork, minimizedMaxWork);
+                    // Minimum of all possible max boards segment
+                    minimumMaxBoardsSegment = Math.Min(maxBoardsSegment, minimumMaxBoardsSegment);
                 }
 
-                return dp[noOfBoards, painters] = minimizedMaxWork;
+                return dp[noOfBoards, painters] = minimumMaxBoardsSegment;
             }
 
 
-            int SumWork(int start, int end)
+            int AddBoards(int start, int end)
             {
-                int totalTime = 0;
-
-                for (int i = start; i <= end; i++) totalTime += boards[i];
-
-                return totalTime;
+                int sum = 0;
+                for (int i = start; i <= end; i++) sum += boards[i];
+                return sum;
             }
         }
 
 
-
         internal static void Work()
         {
-            int noOfPainters = 2;
+            //int noOfPainters = 2;
             //int[] boards = { 10, 10, 10, 10 };   // Ans: 20
-            int[] boards = { 10, 20, 30, 40 };   // Ans: 60
+            //int[] boards = { 10, 20, 30, 40 };   // Ans: 60
 
-            //int noOfPainters = 5;
-            //int[] boards = { 2, 8, 9, 1 };   // Ans: 9
+            int noOfPainters = 5;
+            int[] boards = { 2, 8, 9, 1 };   // Ans: 9
 
             //int noOfPainters = 14;
             //int[] boards =
@@ -92,7 +89,7 @@ namespace DP
             //};
             // Ans: 647   // Calls: 776
 
-            int fairMaxWork = new PaintersPartitionProblem().MinimizeMaxWorkDp(noOfPainters, boards);
+            int fairMaxWork = new PaintersPartitionProblem().MinimizeMaxBoards(boards, noOfPainters);
             WriteLine(fairMaxWork);
         }
     }
