@@ -6,7 +6,8 @@ namespace DP
     {
         static void Main(string[] args)
         {
-            PaintersPartitionProblem.Work();
+            //PaintersPartitionProblem.Work();
+            MaxSumProblem.Work();
         }
     }
 }
