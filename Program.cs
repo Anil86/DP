@@ -7,7 +7,8 @@ namespace DP
         static void Main(string[] args)
         {
             //PaintersPartitionProblem.Work();
-            MaxSumProblem.Work();
+            //MaxSumProblem.Work();
+            XsquareAnd2Arrays.Work();
         }
     }
 }
