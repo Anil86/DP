@@ -8,7 +8,8 @@ namespace DP
         {
             //PaintersPartitionProblem.Work();
             //MaxSumProblem.Work();
-            XsquareAnd2Arrays.Work();
+            //XsquareAnd2Arrays.Work();
+            MemoizationTabulation.Work();
         }
     }
 }
