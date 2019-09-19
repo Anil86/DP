@@ -4,7 +4,7 @@ namespace DP
 {
     public class NumberFactor
     {
-        private int NoOfCombinations(int n)
+        private int NoOfCombinationsMemo(int n)
         {
             int[] dp = new int[n + 1];
 
@@ -33,13 +33,40 @@ namespace DP
         }
 
 
+        private int NoOfCombinationsTab(int n)
+        {
+            int[] dp = new int[n + 1];
+
+            // Solve small sub-problems
+            dp[0] = dp[1] = dp[2] = 1;
+            dp[3] = 2;
+
+            for (int i = 4; i <= n; i++)
+            {
+                // Divide
+                int nMinus1Ways = dp[i - 1];
+                int nMinus3Ways = dp[i - 3];
+                int nMinus4Ways = dp[i - 4];
+
+
+                // Combine
+                dp[i] = nMinus1Ways + nMinus3Ways + nMinus4Ways;
+            }
+
+            return dp[n];
+        }
+
+
+
         public static void Work()
         {
             //int n = 4;   // Ans: 4
             //int n = 5;   // Ans: 6
-            int n = 6;   // Ans: 9
+            //int n = 6;   // Ans: 9
+            int n = 7;   // Ans: 15
 
-            int noOfTimes = new NumberFactor().NoOfCombinations(n);
+            //int noOfTimes = new NumberFactor().NoOfCombinationsMemo(n);
+            int noOfTimes = new NumberFactor().NoOfCombinationsTab(n);
             WriteLine(noOfTimes);
         }
     }
