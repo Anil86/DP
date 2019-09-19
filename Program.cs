@@ -10,7 +10,8 @@ namespace DP
             //MaxSumProblem.Work();
             //XsquareAnd2Arrays.Work();
             //MemoizationTabulation.Work();
-            NumberFactor.Work();
+            //NumberFactor.Work();
+            HouseThief.Work();
         }
     }
 }

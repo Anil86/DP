@@ -13,43 +13,34 @@ namespace DP
 
             int NoOfCombinationsLocal(int num)
             {
-                _count++;
                 // Solve small sub-problems
                 switch (num)
                 {
-                    case int numb when numb <= 2: dp[numb] = 1; break;
-                    case 3: dp[3] = 2; break;
-                        //case int numb when numb <= 2: return 1;
-                        //case 3: return 2;
+                    case int numb when numb <= 2: return dp[numb] = 1;
+                    case 3: return dp[3] = 2;
                 }
 
 
                 // Divide
-                if (dp[num] == 0)
-                {
-                    int nMinus1Ways = NoOfCombinationsLocal(num - 1);
-                    int nMinus3Ways = NoOfCombinationsLocal(num - 3);
-                    int nMinus4Ways = NoOfCombinationsLocal(num - 4);
-
-                    dp[num] = nMinus1Ways + nMinus3Ways + nMinus4Ways;
-                }
+                if (dp[num - 1] == 0) dp[num - 1] = NoOfCombinationsLocal(num - 1);
+                if (dp[num - 3] == 0) dp[num - 3] = NoOfCombinationsLocal(num - 3);
+                if (dp[num - 4] == 0) dp[num - 4] = NoOfCombinationsLocal(num - 4);
 
 
                 // Combine
-                return dp[num];
+                return dp[num] = dp[num - 1] + dp[num - 3] + dp[num - 4];
             }
         }
 
 
-        private static int _count;
         public static void Work()
         {
             //int n = 4;   // Ans: 4
             //int n = 5;   // Ans: 6
-            int n = 6;   // Ans: 9   Count: 10  7  
+            int n = 6;   // Ans: 9
 
             int noOfTimes = new NumberFactor().NoOfCombinations(n);
-            WriteLine(noOfTimes); WriteLine($"Count: {_count}");
+            WriteLine(noOfTimes);
         }
     }
 }
