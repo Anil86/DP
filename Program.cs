@@ -11,7 +11,8 @@ namespace DP
             //XsquareAnd2Arrays.Work();
             //MemoizationTabulation.Work();
             //NumberFactor.Work();
-            HouseThief.Work();
+            //HouseThief.Work();
+            Convert1String2Another.Work();
         }
     }
 }
