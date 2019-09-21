@@ -12,7 +12,9 @@ namespace DP
             //MemoizationTabulation.Work();
             //NumberFactor.Work();
             //HouseThief.Work();
-            Convert1String2Another.Work();
+            //Convert1String2Another.Work();
+            //RhezoAndPrimeProblems.Work();
+            LongestCommonSubsequence.Work();
         }
     }
 }
