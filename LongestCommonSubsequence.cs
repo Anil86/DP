@@ -7,6 +7,11 @@ namespace DP
     {
         private int FindLcsLengthMemo(string str1, string str2)
         {
+            int[,] dp = new int[str1.Length + 1, str2.Length + 1];
+            for (int i1 = 0; i1 < dp.GetLength(0); i1++)
+                for (int i2 = 0; i2 < dp.GetLength(1); i2++)
+                    dp[i1, i2] = -1;
+
             return FindLcsLength(0, 0);
 
 
@@ -14,25 +19,30 @@ namespace DP
             int FindLcsLength(int i1, int i2)
             {
                 // Solve small sub-problems
-                if (i1 == str1.Length || i2 == str2.Length) return 0;
+                if (i1 == str1.Length || i2 == str2.Length)
+                    return dp[str1.Length, i2] = dp[i1, str2.Length] = 0;
 
 
                 // Divide
                 // Case 1: Equal chars
-                if (str1[i1] == str2[i2]) return 1 + FindLcsLength(i1 + 1, i2 + 1);
+                if (str1[i1] == str2[i2])
+                {
+                    if (dp[i1 + 1, i2 + 1] == -1)
+                        dp[i1 + 1, i2 + 1] = FindLcsLength(i1 + 1, i2 + 1);
+                    return dp[i1, i2] = 1 + dp[i1 + 1, i2 + 1];
+                }
 
                 // Case 2: Unequal chars
                 // Case 2.1: Find str1 char match in str2
-                int matchesSkipStr2 = FindLcsLength(i1, i2 + 1);
+                if (dp[i1, i2 + 1] == -1) dp[i1, i2 + 1] = FindLcsLength(i1, i2 + 1);
                 // Case 2.2: Find str2 char match in str1
-                int matchesSkipStr1 = FindLcsLength(i1 + 1, i2);
+                if (dp[i1 + 1, i2] == -1) dp[i1 + 1, i2] = FindLcsLength(i1 + 1, i2);
 
 
                 // Combine
-                return Math.Max(matchesSkipStr2, matchesSkipStr1);
+                return dp[i1, i2] = Math.Max(dp[i1, i2 + 1], dp[i1 + 1, i2]);
             }
         }
-
 
 
         internal static void Work()
