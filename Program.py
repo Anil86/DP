@@ -1,4 +1,5 @@
 from IntelligentGirl import IntelligentGirl
+from LongestPalindromicSubsequence import LongestPalindromicSubsequence
 from MaxProfit import MaxProfit
 from PadovanSequence import PadovanSequence
 from WackyWorkouts import WackyWorkouts
@@ -10,7 +11,8 @@ class Program:
         # PadovanSequence.Work()
         # WackyWorkouts.Work()
         # MaxProfit.Work()
-        IntelligentGirl.Work()
+        # IntelligentGirl.Work()
+        LongestPalindromicSubsequence.Work()
 
 
 if __name__ == "__main__":
