@@ -20,7 +20,6 @@ namespace DP
 
             int CalculateMaxPrimePartitionsSum(int start)
             {
-                _count++;
                 // Optimizations
                 // If whole partition is prime, return total sum
                 if (IsPartitionPrime(start)) return dp[start] = Sum(start, array.Length - 1);
@@ -32,14 +31,15 @@ namespace DP
 
                 // Divide
                 int maxSum = int.MinValue;
+                int previousPartitionSum = 0;
                 for (var i = 0; i < zeroAndPrimes.Length; i++)
                 {
-                    int currentPlusRemainingPartitionSum;
+                    int totalPartitionsSum;
                     if (i == 0)
                     {
                         if (dp[start + 1] == -1)
                             dp[start + 1] = CalculateMaxPrimePartitionsSum(start + 1);
-                        currentPlusRemainingPartitionSum = dp[start + 1];
+                        totalPartitionsSum = dp[start + 1];
                     }
                     else
                     {
@@ -48,17 +48,18 @@ namespace DP
                         // So break
                         if (zeroAndPrimes[i] > array.Length - start) break;
 
-                        int currentPartitionSum = Sum(start, start + zeroAndPrimes[i] - 1);
+                        // Optimization: Optimized Sum using previous sum
+                        SumUsingPrevious(ref previousPartitionSum, start + zeroAndPrimes[i - 1], start + zeroAndPrimes[i] - 1);
                         if (dp[start + zeroAndPrimes[i] + 1] == -1)
                             dp[start + zeroAndPrimes[i] + 1] =
                                 CalculateMaxPrimePartitionsSum(start + zeroAndPrimes[i] + 1);
                         int remainingPartitionSum = dp[start + zeroAndPrimes[i] + 1];
-                        currentPlusRemainingPartitionSum = currentPartitionSum + remainingPartitionSum;
+                        totalPartitionsSum = previousPartitionSum + remainingPartitionSum;
                     }
 
 
                     // Combine
-                    if (currentPlusRemainingPartitionSum > maxSum) maxSum = currentPlusRemainingPartitionSum;
+                    if (totalPartitionsSum > maxSum) maxSum = totalPartitionsSum;
                 }
 
                 return dp[start] = maxSum;
@@ -71,6 +72,11 @@ namespace DP
                 for (int i = start; i <= end; i++) sum += array[i];
 
                 return sum;
+            }
+
+            void SumUsingPrevious(ref int previousSum, int start, int end)
+            {
+                for (int i = start; i <= end; i++) previousSum += array[i];
             }
 
 
@@ -156,27 +162,27 @@ namespace DP
         }
 
 
-        private static int _count;
         internal static void Work()
         {
-            //int[] array = { 7, 6, 1, 8, 9, 10 };   // Ans: 40 
+            int[] array = { 7, 6, 1, 8, 9, 10 };   // Ans: 40 
             //int[] array = { 1, 1, 3, 2, 3, 2 };   // Ans: 11
             //int[] array = { 5, 6, 3, 8, 9, 1, 2 };   // Ans: 34
 
-            //int maxSum = new RhezoAndPrimeProblems().CalculateMaxPrimePartitionsSum(array);
-            //WriteLine(maxSum); WriteLine($"Count: {_count}");
+            int maxSum = new RhezoAndPrimeProblems().CalculateMaxPrimePartitionsSum(array);
+            WriteLine(maxSum);
 
 
-            using (StreamReader file =
-                new StreamReader(@"E:\Tutorials\C# Programming\App Business Logic\Algorithms\Books\Sample.txt"))
-            {
-                file.ReadLine();
-                string[] array1String = file.ReadLine().Split();
-                int[] array1 = Array.ConvertAll(array1String, int.Parse);
+            // Read i/p from file
+            //using (StreamReader file =
+            //    new StreamReader(@"E:\Tutorials\C# Programming\App Business Logic\Algorithms\Books\Sample.txt"))
+            //{
+            //    file.ReadLine();
+            //    string[] array1String = file.ReadLine().Split();
+            //    int[] array1 = Array.ConvertAll(array1String, int.Parse);
 
-                int maxSum = new RhezoAndPrimeProblems().CalculateMaxPrimePartitionsSum(array1);
-                WriteLine(maxSum); WriteLine($"Count: {_count}");   // Ans: 973271   332   303   20
-            }
+            //    int maxSum = new RhezoAndPrimeProblems().CalculateMaxPrimePartitionsSum(array1);
+            //    WriteLine(maxSum); WriteLine($"Count: {_count}");
+            //}
         }
     }
 }
