@@ -15,6 +15,7 @@ namespace DP
             //Convert1String2Another.Work();
             //RhezoAndPrimeProblems.Work();
             //LongestCommonSubsequence.Work();
+            OnceUponTimeInTimeLand.Work();
         }
     }
 }
