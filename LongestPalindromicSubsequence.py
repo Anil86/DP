@@ -44,6 +44,34 @@ class LongestPalindromicSubsequence:
 
         return FindLpsLength(0, len(s) - 1)
 
+    def FindLpsLengthTab(self, s):
+        length = len(s)
+
+        dp = [[0 for _ in range(length)] for _ in range(length)]
+
+        for end in range(length):
+            for start in range(end, -1, -1):
+                # Solve small sub-problems
+                if start == end:
+                    dp[start][end] = 1
+                    continue
+
+                # Divide
+                # Case 1: Chars match
+                if s[start] == s[end]:
+                    dp[start][end] = 2 + dp[start + 1][end - 1]
+                else:
+                    # Unequal chars
+                    # Case 2.1: Match start char w/ end's previous char
+                    noOfMatchStart = dp[start][end - 1]
+                    # Case 2.2: Match end char w/ start's next char
+                    noOfMatchEnd = dp[start + 1][end]
+
+                    # Combine
+                    dp[start][end] = max(noOfMatchStart, noOfMatchEnd)
+
+        return dp[0][length - 1]
+
     @staticmethod
     def Work():
         s = "elrmenmet"  # Ans: 5
@@ -52,5 +80,6 @@ class LongestPalindromicSubsequence:
         # s = "mamdrdm"   # Ans: 5
         # s = "mqadasm"   # Ans: 5
 
-        longestPalindromeCount = LongestPalindromicSubsequence().FindLpsLengthMemo(s)
+        # longestPalindromeCount = LongestPalindromicSubsequence().FindLpsLengthMemo(s)
+        longestPalindromeCount = LongestPalindromicSubsequence().FindLpsLengthTab(s)
         print(longestPalindromeCount)
