@@ -46,7 +46,6 @@ class LongestPalindromicSubsequence:
 
     def FindLpsLengthTab(self, s):
         length = len(s)
-
         dp = [[0 for _ in range(length)] for _ in range(length)]
 
         for end in range(length):

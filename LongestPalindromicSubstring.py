@@ -3,7 +3,6 @@ class LongestPalindromicSubstring:
         dp = [[-1 for _ in range(len(s))] for _ in range(len(s))]
 
         def FindLpsLength(start, end):
-            LongestPalindromicSubstring._count += 1
             # Solve small sub-problems
             if start == end:
                 dp[start][end] = 1
@@ -40,7 +39,36 @@ class LongestPalindromicSubstring:
 
         return FindLpsLength(0, len(s) - 1)
 
-    _count = 0
+    def FindLpsLengthTab(self, s):
+        length = len(s)
+        dp = [[0 for _ in range(length)] for _ in range(length)]
+
+        for end in range(length):
+            for start in range(end, -1, -1):
+                # Solve small sub-problems
+                if start == end:
+                    dp[start][end] = 1
+                    continue
+
+                # Divide
+                # Case 1: Equal chars
+                if s[start] == s[end]:
+                    noOfInBetweenChars = end - start - 1
+                    noOfPalindromicChars = dp[start + 1][end - 1]
+                    if noOfInBetweenChars == noOfPalindromicChars:
+                        dp[start][end] = 2 + noOfPalindromicChars
+                        continue
+
+                # Case 2: Unequal chars
+                # Case 2.1: Match start char w/ end's previous char
+                noOfMatchesStart = dp[start][end - 1]
+                # Case 2.2: Match end char w/ start's next char
+                noOfMatchesEnd = dp[start + 1][end]
+
+                # Combine
+                dp[start][end] = max(noOfMatchesStart, noOfMatchesEnd)
+
+        return dp[0][length - 1]
 
     @staticmethod
     def Work():
@@ -49,6 +77,5 @@ class LongestPalindromicSubstring:
         # s = "mamdrdm"   # Ans: 5   110   20
         # s = "mqadasm"  # Ans: 3   118   28
 
-        longestPalindromeCount = LongestPalindromicSubstring().FindLpsLengthMemo(s)
+        longestPalindromeCount = LongestPalindromicSubstring().FindLpsLengthTab(s)
         print(longestPalindromeCount)
-        print(f"Count: {LongestPalindromicSubstring._count}")
