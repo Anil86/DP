@@ -35,21 +35,49 @@ class MinCostReachArrayEnd:
 
         return FindMinCost(len(array) - 1, len(array[0]) - 1)
 
+    def FindMinCostTab(self, array):
+        dp = [[-1 for _ in range(len(array[0]))] for _ in range(len(array))]
+
+        # Solve small sub-problems
+        dp[0][0] = array[0][0]
+
+        for column in range(len(array[0])):
+            for row in range(len(array)):
+                # Solve small sub-problems
+                if row == 0 and column == 0: continue
+
+                # Optimizations
+                if column == 0:
+                    dp[row][0] = array[row][0] + dp[row - 1][0]
+                    continue
+                if row == 0:
+                    dp[0][column] = array[0][column] + dp[0][column - 1]
+                    continue
+
+                # Divide
+                costTillLeft = dp[row][column - 1]
+                costTillTop = dp[row - 1][column]
+
+                # Combine
+                minCostTillPrevious = min(costTillLeft, costTillTop)
+                dp[row][column] = array[row][column] + minCostTillPrevious
+
+        return dp[len(array) - 1][len(array[0]) - 1]
+
     @staticmethod
     def Work():
-        # array = [[4, 7, 8, 6, 4],
-        #          [6, 7, 3, 9, 2],
-        #          [2, 9, 8, 9, 3],
-        #          [3, 8, 1, 2, 4],
-        #          [7, 1, 7, 3, 7]]  # Ans: 36
+        array = [[4, 7, 8, 6, 4],
+                 [6, 7, 3, 9, 2],
+                 [2, 9, 8, 9, 3],
+                 [3, 8, 1, 2, 4],
+                 [7, 1, 7, 3, 7]]  # Ans: 36
 
-        array = [[4, 7, 8, 6],
-                 [6, 7, 3, 9],
-                 [2, 9, 8, 9],
-                 [3, 8, 1, 2]]  # Ans: 26
+        # array = [[4, 7, 8, 6],
+        #          [6, 7, 3, 9],
+        #          [2, 9, 8, 9]]  # Ans: 37
 
         # array = [[4, 7, 8],
         #          [6, 7, 3]]  # Ans: 20
 
-        minCost = MinCostReachArrayEnd().FindMinCostMemo(array)
+        minCost = MinCostReachArrayEnd().FindMinCostTab(array)
         print(minCost)
