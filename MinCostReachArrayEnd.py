@@ -1,22 +1,37 @@
 class MinCostReachArrayEnd:
     def FindMinCost(self, array):
+        dp = [[-1 for _ in range(len(array[0]))] for _ in range(len(array))]
+
         def FindMinCost(row, column):
             # Solve small sub-problems
-            if row == 0 and column == 0: return array[0][0]
+            if row == 0 and column == 0:
+                dp[0][0] = array[0][0]
+                return array[0][0]
 
             # Optimizations
             # 1st row
-            if row == 0: return array[0][column] + FindMinCost(0, column - 1)
+            if row == 0:
+                if dp[0][column - 1] == -1:
+                    dp[0][column - 1] = FindMinCost(0, column - 1)
+                return array[0][column] + dp[0][column - 1]
             # 1st column
-            if column == 0: return array[row][0] + FindMinCost(row - 1, 0)
+            if column == 0:
+                if dp[row - 1][0] == -1:
+                    dp[row - 1][0] = FindMinCost(row - 1, 0)
+                return array[row][0] + dp[row - 1][0]
 
             # Divide
-            costTillLeft = FindMinCost(row, column - 1)
-            costTillTop = FindMinCost(row - 1, column)
+            if dp[row][column - 1] == -1:
+                dp[row][column - 1] = FindMinCost(row, column - 1)
+            costTillLeft = dp[row][column - 1]
+            if dp[row - 1][column] == -1:
+                dp[row - 1][column] = FindMinCost(row - 1, column)
+            costTillTop = dp[row - 1][column]
 
             # Combine
             minCostTillPrevious = min(costTillLeft, costTillTop)
-            return array[row][column] + minCostTillPrevious
+            dp[row][column] = array[row][column] + minCostTillPrevious
+            return dp[row][column]
 
         return FindMinCost(len(array) - 1, len(array[0]) - 1)
 

@@ -17,8 +17,8 @@ class Program:
         # IntelligentGirl.Work()
         # LongestPalindromicSubsequence.Work()
         # LongestPalindromicSubstring.Work()
-        # MinCostReachArrayEnd.Work()
-        XsquareAndChocolatesBars.Work()
+        MinCostReachArrayEnd.Work()
+        # XsquareAndChocolatesBars.Work()
 
 
 if __name__ == "__main__": Program.Main()
