@@ -1,5 +1,5 @@
 class MinCostReachArrayEnd:
-    def FindMinCost(self, array):
+    def FindMinCostMemo(self, array):
         dp = [[-1 for _ in range(len(array[0]))] for _ in range(len(array))]
 
         def FindMinCost(row, column):
@@ -37,14 +37,19 @@ class MinCostReachArrayEnd:
 
     @staticmethod
     def Work():
-        array = [[4, 7, 8, 6, 4],
-                 [6, 7, 3, 9, 2],
-                 [2, 9, 8, 9, 3],
-                 [3, 8, 1, 2, 4],
-                 [7, 1, 7, 3, 7]]  # Ans: 36
+        # array = [[4, 7, 8, 6, 4],
+        #          [6, 7, 3, 9, 2],
+        #          [2, 9, 8, 9, 3],
+        #          [3, 8, 1, 2, 4],
+        #          [7, 1, 7, 3, 7]]  # Ans: 36
+
+        array = [[4, 7, 8, 6],
+                 [6, 7, 3, 9],
+                 [2, 9, 8, 9],
+                 [3, 8, 1, 2]]  # Ans: 26
 
         # array = [[4, 7, 8],
         #          [6, 7, 3]]  # Ans: 20
 
-        minCost = MinCostReachArrayEnd().FindMinCost(array)
+        minCost = MinCostReachArrayEnd().FindMinCostMemo(array)
         print(minCost)
