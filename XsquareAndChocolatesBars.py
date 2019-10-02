@@ -35,46 +35,72 @@ class XsquareAndChocolatesBars:
     #     differentCandiesSetCount = CountDifferentCandiesSets(1)
     #     return len(bar) - 3 * differentCandiesSetCount
 
-    def CountRemainingCandies(self, bar):
-        dp = [ReturnValues(candySetsCount=-1, canConsiderCurrent=False) for _ in range(len(bar) + 2)]
+    # def CountRemainingCandies(self, bar):
+    #     dp = [ReturnValues(candySetsCount=-1, canConsiderCurrent=False) for _ in range(len(bar) + 2)]
+    #
+    #     def CountConsecutiveDifferentCandySets(current):
+    #         XsquareAndChocolatesBars._count += 1
+    #         # Solve small sub-problems
+    #         if current >= len(bar) - 1:
+    #             dp[current] = ReturnValues(candySetsCount=0, canConsiderCurrent=False)
+    #             return dp[current]
+    #
+    #         # Divide
+    #         # Case 1: Consider current
+    #         # Case 1.1: If same chocolate set
+    #         withCurrent = ReturnValues(candySetsCount=0, canConsiderCurrent=False)
+    #         # Case 1.2: If different chocolate set
+    #         if bar[current - 1] != bar[current] or bar[current] != bar[current + 1]:
+    #             if dp[current + 3].candySetsCount == -1:
+    #                 dp[current + 3] = CountConsecutiveDifferentCandySets(current + 3)
+    #             withCurrent = ReturnValues(candySetsCount=1 + dp[current + 3].candySetsCount, canConsiderCurrent=True) \
+    #                 if dp[current + 3].canConsiderCurrent else \
+    #                 ReturnValues(candySetsCount=1, canConsiderCurrent=True)
+    #
+    #         # Case 2: Consider next
+    #         if dp[current + 1].candySetsCount == -1:
+    #             dp[current + 1] = CountConsecutiveDifferentCandySets(current + 1)
+    #         withoutCurrent = dp[current + 1]
+    #
+    #         # Combine
+    #         dp[current] = withCurrent if withCurrent.candySetsCount > withoutCurrent.candySetsCount else withoutCurrent
+    #         return dp[current]
+    #
+    #     (consecutiveDifferentCandySetCount, _) = CountConsecutiveDifferentCandySets(1)
+    #     return len(bar) - 3 * consecutiveDifferentCandySetCount
 
-        def CountConsecutiveDifferentCandySets(current):
+    def CountRemainingCandies(self, bar):
+        def CountConsecutiveSets(current):
             XsquareAndChocolatesBars._count += 1
             # Solve small sub-problems
-            if current >= len(bar) - 1:
-                dp[current] = ReturnValues(candySetsCount=0, canConsiderCurrent=False)
-                return dp[current]
+            if current >= len(bar) - 1: return 0
 
             # Divide
-            # Case 1: Consider current
-            # Case 1.1: If same chocolate set
-            withCurrent = ReturnValues(candySetsCount=0, canConsiderCurrent=False)
-            # Case 1.2: If different chocolate set
-            if bar[current - 1] != bar[current] or bar[current] != bar[current + 1]:
-                if dp[current+3].candySetsCount==-1: dp[current+3] = CountConsecutiveDifferentCandySets(current + 3)
-                tempWithCurrent = CountConsecutiveDifferentCandySets(current + 3)
-                withCurrent = ReturnValues(candySetsCount=1 + tempWithCurrent.candySetsCount, canConsiderCurrent=True) \
-                    if tempWithCurrent.canConsiderCurrent else \
-                    ReturnValues(candySetsCount=1, canConsiderCurrent=True)
+            # Case 1: If same candies
+            if bar[current - 1] == bar[current] and bar[current] == bar[current + 1]:
+                return CountConsecutiveSets(current + 1)
 
-                # Consider next
-            withoutCurrent = CountConsecutiveDifferentCandySets(current + 1)
+            # Case 2: If different candies
+            # Case 2.1: Consider current
+            withCurrent = 1 + CountConsecutiveSets(current + 3)
+            # Case 2.2: Ignore current
+            withoutCurrent = CountConsecutiveSets(current + 1)
 
             # Combine
-            return withCurrent if withCurrent.candySetsCount > withoutCurrent.candySetsCount else withoutCurrent
+            return max(withCurrent, withoutCurrent)
 
-        (consecutiveDifferentCandySetCount, _) = CountConsecutiveDifferentCandySets(1)
-        return len(bar) - 3 * consecutiveDifferentCandySetCount
+        consecutiveSetsCount = CountConsecutiveSets(1)
+        return len(bar) - 3 * consecutiveSetsCount
 
     _count = 0
 
     @staticmethod
     def Work():
-        # bar = "CCCCCCCCC"   # Ans: 9
-        # bar = "SSSSCSCCC"  # Ans: 3   # C: 16
-        # bar = "SSCCSSSCS"  # Ans: 0   # C: 34
-        bar = "CCSSSSC"  # Ans: 1   # C: 14
-        # bar = "CCCSCCSSSCSCCSCSSCSCCCSSCCSCCCSCCSSSCCSCCCSCSCCCSSSCCSSSSCSCCCSCSSCSSSCSSSCSCCCSCSCSCSSSCS"  # Ans: 39  C: 91
+        # bar = "CCCCCCCCC"  # Ans: 9
+        # bar = "SSSSCSCCC"  # Ans: 3   # C: 16  9
+        # bar = "SSCCSSSCS"  # Ans: 0   # C: 34   10
+        # bar = "CCSSSSC"  # Ans: 1   # C: 14  7
+        bar = "CCCSCCSSSCSCCSCSSCSCCCSSCCSCCCSCCSSSCCSCCCSCSCCCSSSCCSSSSCSCCCSCSSCSSSCSSSCSCCCSCSCSCSSSCS"  # Ans: 39  C: 91
 
         remainingCandies = XsquareAndChocolatesBars().CountRemainingCandies(bar)
         print(remainingCandies)
