@@ -16,7 +16,6 @@ namespace DP
 
             int NoOfPrimesLocal(int num)
             {
-                _count++;
                 // Solve small sub-problems
                 switch (num)
                 {
@@ -75,7 +74,6 @@ namespace DP
         }
 
 
-        private static int _count;
         internal static void Work()
         {
             int n = 11;   // Ans: 3   45  9
@@ -84,7 +82,7 @@ namespace DP
             //int n = 7;   // Ans: 1
 
             int primesCount = new LetsBegin().NoOfPrimes(n);
-            WriteLine(primesCount); WriteLine($"C: {_count}");
+            WriteLine(primesCount);
         }
     }
 }
