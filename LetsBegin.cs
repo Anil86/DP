@@ -41,7 +41,7 @@ namespace DP
                 {
                     if (dp[balance] == 0)
                         dp[balance] = NoOfPrimesLocal(balance);
-                    take7Count = 1 + dp[balance];
+                    take7Count = dp[balance];
                 }
 
                 balance = num - 5;
@@ -49,7 +49,7 @@ namespace DP
                 {
                     if (dp[balance] == 0)
                         dp[balance] = NoOfPrimesLocal(balance);
-                    take5Count = 1 + dp[balance];
+                    take5Count = dp[balance];
                 }
 
                 balance = num - 3;
@@ -57,7 +57,7 @@ namespace DP
                 {
                     if (dp[balance] == 0)
                         dp[balance] = NoOfPrimesLocal(balance);
-                    take3Count = 1 + dp[balance];
+                    take3Count = dp[balance];
                 }
 
                 balance = num - 2;
@@ -65,12 +65,12 @@ namespace DP
                 {
                     if (dp[balance] == 0)
                         dp[balance] = NoOfPrimesLocal(balance);
-                    take2Count = 1 + dp[balance];
+                    take2Count = dp[balance];
                 }
 
 
                 // Combine
-                return dp[num] = Math.Min(take7Count, Math.Min(take5Count, Math.Min(take3Count, take2Count)));
+                return dp[num] = 1 + Math.Min(take7Count, Math.Min(take5Count, Math.Min(take3Count, take2Count)));
             }
         }
 
