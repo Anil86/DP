@@ -17,7 +17,8 @@ namespace DP
             //RhezoAndPrimeProblems.Work();
             //LongestCommonSubsequence.Work();
             //OnceUponTimeInTimeLand.Work();
-            LetsBegin.Work();
+            //LetsBegin.Work();
+            NoOfWaysReachLastGivenCost.Work();
         }
 
         //static void Main(
