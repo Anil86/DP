@@ -6,7 +6,7 @@ namespace DP
     {
         static void Main(string[] args)
         {
-            PaintersPartitionProblem.Work();
+
         }
     }
 }
