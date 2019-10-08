@@ -26,12 +26,21 @@ class IntelligentGirl:
         CountEvens(0)
         return dp
 
+    def CountEvensTab(self, s):
+        dp = [0] * (len(s) + 1)
+
+        # Divide & Combine
+        for current in range(len(s) - 1, -1, -1):
+            dp[current] = 1 + dp[current + 1] if int(s[current]) % 2 == 0 else dp[current + 1]
+
+        return dp
+
     @staticmethod
     def Work():
         # s = "6476"   # 3
-        s = "574674546476"  # 7  90
+        s = "574674546476"  # 7
 
-        evensCount = IntelligentGirl().CountEvensMemo(s)
+        evensCount = IntelligentGirl().CountEvensTab(s)
         evensCountString = ""
         for i in range(len(evensCount) - 1): evensCountString += f" {evensCount[i]}"
         print(evensCountString.lstrip())
