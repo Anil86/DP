@@ -28,10 +28,27 @@ class MaxSumProblem:
 
         return CalculateMaxSumAfterDivisions(num)
 
+    def CalculateMaxSumAfterDivisionsTab(self, num):
+        dp = [-1] * (num + 1)
+
+        for n in range(num + 1):
+            # Solve small sub-problems
+            if n <= 11:
+                dp[n] = n
+                continue
+
+            # Divide
+            partsSum = dp[n // 2] + dp[n // 3] + dp[n // 4]
+
+            # Combine
+            dp[n] = max(n, partsSum)
+
+        return dp[num]
+
     @staticmethod
     def Work():
-        n = 12  # 13   4
-        # n = 24  # 27   7  6
+        n = 12  # 13
+        # n = 24  # 27
 
-        maxSum = MaxSumProblem().CalculateMaxSumAfterDivisionsMemo(n)
+        maxSum = MaxSumProblem().CalculateMaxSumAfterDivisionsTab(n)
         print(maxSum)
